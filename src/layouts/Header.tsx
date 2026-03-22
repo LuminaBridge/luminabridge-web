@@ -1,11 +1,10 @@
-import { Layout, Dropdown, Avatar, Badge, Tooltip, Switch, Space } from 'antd';
+import { Layout, Dropdown, Avatar, Badge, Tooltip, Switch } from 'antd';
 import {
   BellOutlined,
   LogoutOutlined,
   UserOutlined,
   MoonOutlined,
   SunOutlined,
-  HomeOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@stores/auth';

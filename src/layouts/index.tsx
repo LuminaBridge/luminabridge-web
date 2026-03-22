@@ -8,7 +8,7 @@ import Sidebar from './Sidebar';
 const { Content } = Layout;
 
 const LayoutComponent: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed] = useState(false);
   const { isDark } = useThemeStore();
 
   return (

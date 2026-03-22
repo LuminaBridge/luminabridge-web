@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Row, Col, Card, Table, Tag, Space, Button, Switch } from 'antd';
+import { useState } from 'react';
+import { Row, Col, Card, Table, Tag, Switch } from 'antd';
 import {
   ThunderboltOutlined,
   CheckCircleOutlined,
@@ -7,7 +7,7 @@ import {
   DollarOutlined,
 } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
-import { getDashboardStats, getRealtimeStats } from '@services/stats';
+import { getDashboardStats } from '@services/stats';
 import StatCard from '@components/StatCard';
 import ReactECharts from 'echarts-for-react';
 import { useWebSocket } from '@hooks/useWebSocket';
@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
   const [realtimeStats, setRealtimeStats] = useState<Stats | null>(null);
 
   // 获取仪表盘统计数据
-  const { data: dashboardData, isLoading } = useQuery({
+  const { data: dashboardData } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: getDashboardStats,
     refetchInterval: autoRefresh ? 5000 : false,

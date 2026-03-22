@@ -22,8 +22,8 @@ import {
   MailOutlined,
 } from '@ant-design/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getUsers, createUser, updateUser, deleteUser, inviteUser } from '@services/users';
-import type { User, CreateUserParams, InviteUserParams } from '@services/users';
+import { getUsers, createUser, updateUser, deleteUser, inviteUser, type CreateUserParams, type InviteUserParams } from '@services/users';
+import type { User } from '@types';
 
 const Users: React.FC = () => {
   const [searchText, setSearchText] = useState('');
@@ -333,7 +333,7 @@ const Users: React.FC = () => {
         onCancel={() => setIsInviteModalVisible(false)}
         confirmLoading={inviteMutation.isPending}
       >
-        <Form inviteForm={inviteForm} layout="vertical">
+        <Form form={inviteForm} layout="vertical">
           <Form.Item
             name="email"
             label="邮箱"

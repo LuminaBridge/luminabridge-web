@@ -10,7 +10,6 @@ import {
   message,
   Popconfirm,
   Tag,
-  Checkbox,
 } from 'antd';
 import {
   PlusOutlined,
@@ -29,8 +28,9 @@ import {
   deleteChannel,
   testChannel,
   batchOperateChannels,
+  type CreateChannelParams,
 } from '@services/channels';
-import type { Channel, CreateChannelParams } from '@types';
+import type { Channel } from '@types';
 
 const { TextArea } = Input;
 
@@ -104,7 +104,7 @@ const Channels: React.FC = () => {
         data.message || (data.success ? '测试成功' : '测试失败')
       );
     },
-    onError: (error: any) => {
+    onError: (_error: any) => {
       message.error('测试失败');
     },
   });

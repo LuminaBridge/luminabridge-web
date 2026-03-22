@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@stores/auth';
-import { Spin } from 'antd';
 
 interface RequireAuthProps {
   children: React.ReactNode;

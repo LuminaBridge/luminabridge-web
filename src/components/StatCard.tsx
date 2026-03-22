@@ -7,7 +7,6 @@ interface StatCardProps {
   suffix?: string;
   trend?: number;
   icon?: React.ReactNode;
-  color?: string;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -16,7 +15,6 @@ const StatCard: React.FC<StatCardProps> = ({
   suffix,
   trend,
   icon,
-  color = 'primary',
 }) => {
   const trendColor = trend !== undefined ? (trend >= 0 ? 'success' : 'error') : undefined;
 

@@ -1,4 +1,4 @@
-import { Card, Tag, Space, Button, Tooltip, Progress } from 'antd';
+import { Card, Tag, Button, Tooltip, Progress } from 'antd';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -36,7 +36,7 @@ const ChannelCard: React.FC<ChannelCardProps> = ({
   };
 
   const getStatusTag = (status: Channel['status']) => {
-    const statusMap = {
+    const statusMap: Record<Channel['status'], { color: string; text: string }> = {
       active: { color: 'success', text: '正常' },
       error: { color: 'error', text: '异常' },
       inactive: { color: 'warning', text: '禁用' },
@@ -90,12 +90,11 @@ const ChannelCard: React.FC<ChannelCardProps> = ({
               <div className="text-sm">
                 <span className="font-medium">错误率:</span>
                 <Progress
-                  percent={(channel.error_rate * 100).toFixed(2)}
+                  percent={Number((channel.error_rate * 100).toFixed(2))}
                   size="small"
                   strokeColor={
                     channel.error_rate > 0.05 ? '#ef4444' : channel.error_rate > 0.01 ? '#f59e0b' : '#10b981'
                   }
-                  format={(percent) => `${percent}%`}
                 />
               </div>
             )}

@@ -22,14 +22,17 @@ import {
   CloseCircleOutlined,
 } from '@ant-design/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getTokens, createToken, deleteToken, updateTokenQuota } from '@services/tokens';
-import type { Token, CreateTokenParams } from '@types';
+import { getTokens, createToken, deleteToken, updateTokenQuota, type CreateTokenParams } from '@services/tokens';
+import type { Token } from '@types';
 
 const Tokens: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingToken, setEditingToken] = useState<Token | null>(null);
+  const [_editingToken, setEditingToken] = useState<Token | null>(null);
+  const [quotaModalVisible, setQuotaModalVisible] = useState(false);
+  const [selectedTokenForQuota, setSelectedTokenForQuota] = useState<Token | null>(null);
   const [form] = Form.useForm();
+  const [quotaForm] = Form.useForm();
   const queryClient = useQueryClient();
 
   // 获取令牌列表
@@ -109,18 +112,22 @@ const Tokens: React.FC = () => {
   };
 
   const handleUpdateQuota = (token: Token) => {
-    Modal.prompt({
-      title: '更新额度',
-      label: '新额度:',
-      defaultValue: token.quota.toString(),
-      onOk: (value) => {
-        const quota = parseInt(value || '0', 10);
-        if (quota < 0) {
-          message.error('额度必须大于 0');
-          return;
-        }
-        updateQuotaMutation.mutate({ id: token.id, quota });
-      },
+    setSelectedTokenForQuota(token);
+    quotaForm.setFieldsValue({ quota: token.quota });
+    setQuotaModalVisible(true);
+  };
+
+  const handleQuotaOk = () => {
+    quotaForm.validateFields().then((values) => {
+      const quota = parseInt(values.quota || '0', 10);
+      if (quota < 0) {
+        message.error('额度必须大于 0');
+        return;
+      }
+      if (selectedTokenForQuota) {
+        updateQuotaMutation.mutate({ id: selectedTokenForQuota.id, quota });
+      }
+      setQuotaModalVisible(false);
     });
   };
 
@@ -128,7 +135,7 @@ const Tokens: React.FC = () => {
     form.validateFields().then((values) => {
       const params: CreateTokenParams = {
         name: values.name,
-        quota: values.quota,
+        quota: parseInt(values.quota, 10),
         expired_time: values.expired_time
           ? new Date(values.expired_time).getTime() / 1000
           : undefined,
@@ -172,7 +179,6 @@ const Tokens: React.FC = () => {
           <Progress
             percent={((record.used_quota || 0) / record.quota) * 100}
             size="small"
-            format={(percent) => `${record.used_quota?.toLocaleString()} / ${record.quota.toLocaleString()}`}
             strokeColor={
               (record.used_quota || 0) / record.quota > 0.9
                 ? '#ef4444'
@@ -180,6 +186,7 @@ const Tokens: React.FC = () => {
                 ? '#f59e0b'
                 : '#10b981'
             }
+            format={() => `${record.used_quota?.toLocaleString()} / ${record.quota.toLocaleString()}`}
           />
         </div>
       ),
@@ -292,6 +299,25 @@ const Tokens: React.FC = () => {
           </Form.Item>
           <Form.Item name="allowed_models" label="允许使用的模型 (每行一个)">
             <Input.TextArea rows={4} placeholder="gpt-4&#10;gpt-3.5-turbo" />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* 更新额度弹窗 */}
+      <Modal
+        title="更新额度"
+        open={quotaModalVisible}
+        onOk={handleQuotaOk}
+        onCancel={() => setQuotaModalVisible(false)}
+        confirmLoading={updateQuotaMutation.isPending}
+      >
+        <Form form={quotaForm} layout="vertical">
+          <Form.Item
+            name="quota"
+            label="新额度"
+            rules={[{ required: true, message: '请输入额度' }]}
+          >
+            <Input type="number" min={0} placeholder="1000000" />
           </Form.Item>
         </Form>
       </Modal>
