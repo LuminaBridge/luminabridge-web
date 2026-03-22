@@ -1,0 +1,12 @@
+# Assets Directory
+
+此目录用于存放静态资源文件：
+- 图片 (logo, icons, illustrations)
+- 字体文件
+- SVG 图标
+- 其他静态资源
+
+示例：
+- logo.svg
+- favicon.ico
+- fonts/
