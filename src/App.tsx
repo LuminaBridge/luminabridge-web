@@ -6,7 +6,7 @@ import Dashboard from '@pages/Dashboard';
 import Channels from '@pages/Channels';
 import Tokens from '@pages/Tokens';
 import Users from '@pages/Users';
-import Layout from '@layouts/Layout';
+import LayoutComponent from '@layouts/index';
 import RequireAuth from '@components/RequireAuth';
 import NotFound from '@pages/NotFound';
 
@@ -32,7 +32,7 @@ function App() {
           path="/"
           element={
             <RequireAuth>
-              <Layout />
+              <LayoutComponent />
             </RequireAuth>
           }
         >
