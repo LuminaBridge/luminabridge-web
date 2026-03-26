@@ -174,22 +174,29 @@ const Tokens: React.FC = () => {
     {
       title: '额度使用',
       key: 'quota',
-      render: (_: any, record: Token) => (
-        <div className="w-48">
-          <Progress
-            percent={((record.used_quota || 0) / record.quota) * 100}
-            size="small"
-            strokeColor={
-              (record.used_quota || 0) / record.quota > 0.9
-                ? '#ef4444'
-                : (record.used_quota || 0) / record.quota > 0.7
-                ? '#f59e0b'
-                : '#10b981'
-            }
-            format={() => `${record.used_quota?.toLocaleString()} / ${record.quota.toLocaleString()}`}
-          />
-        </div>
-      ),
+      render: (_: any, record: Token) => {
+        const quota = record.quota || 0;
+        const used = record.used_quota || 0;
+        const percent = quota > 0 ? Math.min((used / quota) * 100, 100) : 0;
+        const ratio = quota > 0 ? used / quota : 0;
+        
+        return (
+          <div className="w-48">
+            <Progress
+              percent={percent}
+              size="small"
+              strokeColor={
+                ratio > 0.9
+                  ? '#ef4444'
+                  : ratio > 0.7
+                  ? '#f59e0b'
+                  : '#10b981'
+              }
+              format={() => `${used.toLocaleString()} / ${quota.toLocaleString()}`}
+            />
+          </div>
+        );
+      },
     },
     {
       title: '状态',

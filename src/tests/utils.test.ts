@@ -5,7 +5,7 @@
  * 工具/辅助函数测试。
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 describe('Utility Functions', () => {
   describe('formatNumber', () => {
@@ -130,9 +130,9 @@ describe('Utility Functions', () => {
       
       const mockFn = vi.fn();
       const debouncedFn = (() => {
-        let timeout: NodeJS.Timeout;
+        let timeout: any = null;
         return (ms: number = 300) => {
-          clearTimeout(timeout);
+          if (timeout) clearTimeout(timeout);
           timeout = setTimeout(mockFn, ms);
         };
       })();

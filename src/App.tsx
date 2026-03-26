@@ -6,6 +6,9 @@ import Dashboard from '@pages/Dashboard';
 import Channels from '@pages/Channels';
 import Tokens from '@pages/Tokens';
 import Users from '@pages/Users';
+import Stats from '@pages/Stats';
+import Logs from '@pages/Logs';
+import Settings from '@pages/Settings';
 import LayoutComponent from '@layouts/index';
 import RequireAuth from '@components/RequireAuth';
 import NotFound from '@pages/NotFound';
@@ -41,6 +44,9 @@ function App() {
           <Route path="channels" element={<Channels />} />
           <Route path="tokens" element={<Tokens />} />
           <Route path="users" element={<Users />} />
+          <Route path="stats" element={<Stats />} />
+          <Route path="logs" element={<Logs />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         {/* 404 页面 */}

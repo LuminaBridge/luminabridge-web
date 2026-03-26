@@ -76,3 +76,33 @@ export const getDashboardStats = async (): Promise<{
   const response = await apiClient.get<ApiResponse<any>>('/stats/dashboard');
   return response.data.data;
 };
+
+export interface StatsReportParams {
+  start_time: number;
+  end_time: number;
+  group_by?: string;
+}
+
+/**
+ * 获取统计报告
+ */
+export const getStatsReport = async (params: StatsReportParams): Promise<{
+  trend: Array<{
+    date: string;
+    total: number;
+    success: number;
+    failed: number;
+    tokens: number;
+  }>;
+  details: Array<{
+    id: string;
+    name: string;
+    requests: number;
+    success: number;
+    failed: number;
+    tokens: number;
+  }>;
+}> => {
+  const response = await apiClient.get<ApiResponse<any>>('/stats/report', { params });
+  return response.data.data;
+};

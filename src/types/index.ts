@@ -79,9 +79,9 @@ export interface Alert {
 
 // API 响应类型
 export interface ApiResponse<T> {
-  code: number;
-  message: string;
+  success: boolean;
   data: T;
+  message?: string;
 }
 
 // 分页类型
@@ -99,4 +99,16 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
 export interface WebSocketMessage {
   type: 'stats' | 'channel_status' | 'alert';
   data: any;
+}
+
+// 操作日志类型
+export interface OperationLog {
+  id: string;
+  timestamp: number;
+  level: string;
+  module: string;
+  action: string;
+  user: string;
+  ip: string;
+  message: string;
 }

@@ -30,7 +30,9 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
     if (!token) return;
 
     try {
-      const wsUrl = `ws://localhost:8000/api/v1/ws?token=${token}`;
+      // 使用环境变量配置 WebSocket URL，支持开发和生产环境
+      const wsBaseUrl = import.meta.env.VITE_WS_URL || `ws://${window.location.hostname}:8080/api/v1/ws`;
+      const wsUrl = `${wsBaseUrl}?token=${token}`;
       const ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
